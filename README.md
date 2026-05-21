@@ -1,10 +1,10 @@
-# 🚀 Aldan Maulana Fajri - Premium QA Engineer Portfolio
+# 🚀 Aldan Maulana Fajri - QA Engineer Portfolio
 
 Welcome to the repository of my personal portfolio website! This project showcases my experience, skills, and featured projects as a **Quality Assurance Engineer**.
 
 Built with a modern **Dark Bento Grid** aesthetic, focusing on clean UI, smooth animations, and interactive storytelling.
 
-> 🌐 **Live Preview:** [Insert Your GitHub Pages Link Here]
+> 🌐 **Live Preview:** [renpaijo.github.io]
 
 ## ✨ Features
 - **Bento Grid Layout:** Modern, minimalist asymmetrical grid system.
