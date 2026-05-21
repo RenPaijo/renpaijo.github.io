@@ -4,7 +4,7 @@ Welcome to the repository of my personal portfolio website! This project showcas
 
 Built with a modern **Dark Bento Grid** aesthetic, focusing on clean UI, smooth animations, and interactive storytelling.
 
-> 🌐 **Live Preview:** [renpaijo.github.io]
+> 🌐 **Live Preview:** renpaijo.github.io
 
 ## ✨ Features
 - **Bento Grid Layout:** Modern, minimalist asymmetrical grid system.
@@ -26,4 +26,4 @@ Since this is a purely static website, no build tools, dependencies, or installa
 
 1. Clone this repository: 
    ```bash
-   git clone [https://github.com/RenPaijo/renpaijo.github.io)
+   git clone https://github.com/RenPaijo/renpaijo.github.io
