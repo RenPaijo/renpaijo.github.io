@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="style/img/favicon.ico">
+    <title>Aldan Maulana Fajri - Premium QA Dashboard</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style/css/style.css">
+</head>
+<body>
+
+    <main class="bento-container">
+        
+        <!-- Header -->
+        <header class="bento-header reveal">
+            <div class="logo">AMF<span style="color: var(--accent);">.</span></div>
+            <nav>
+                <a href="mailto:aldanmaulanaf@gmail.com" class="btn-contact">Get in Touch <i class="fas fa-paper-plane"></i></a>
+            </nav>
+        </header>
+
+        <div class="bento-grid">
+            
+            <!-- 1. Profile Card -->
+            <div class="bento-card profile-card reveal" style="transition-delay: 0.1s;">
+                <div class="profile-img-container">
+                    <img src="style/img/bg.png" alt="Aldan Maulana Fajri" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <div class="badge">QA Engineer</div>
+                    <h1>Aldan Maulana Fajri</h1>
+                    <p>Ensuring complex enterprise systems are robust, scalable, and bug-free through advanced testing methodologies.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. About Card -->
+            <div class="bento-card about-card reveal" style="transition-delay: 0.2s;">
+                <div class="card-header">
+                    <i class="fas fa-terminal icon"></i>
+                    <h2>About Me</h2>
+                </div>
+                <p>Detail-oriented Quality Assurance Engineer with an Associate's Degree in Informatics Engineering from Sebelas Maret University and professional training from Alterra Academy.</p>
+                <p>My technical proficiency spans a diverse stack utilizing frameworks like Selenium, REST-Assured, and Cypress to validate complex systems and API platforms.</p>
+                <div class="info-tags">
+                    <span><i class="fas fa-map-marker-alt"></i> Nganjuk, Indonesia</span>
+                    <span><i class="fas fa-graduation-cap"></i> GPA 3.77</span>
+                    <a href="https://drive.google.com/file/d/1p0CiWGlgB42L9xLfHd8YY_LhVGo1Iy0f/view" target="_blank" class="cv-tag">
+                        <i class="fas fa-file-pdf"></i> CV
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. Experience Card (Interactive) -->
+            <div class="bento-card experience-card reveal" style="transition-delay: 0.3s;">
+                <div class="card-header">
+                    <i class="fas fa-briefcase icon"></i>
+                    <h2>Experience</h2>
+                </div>
+                <div class="exp-list">
+                    <div class="exp-item interactive" onclick="openModal('vnt')">
+                        <div class="exp-year">2025 - 2026</div>
+                        <div class="exp-details">
+                            <h3>QA Engineer</h3>
+                            <span>VNT Network <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px; color: var(--accent);"></i></span>
+                        </div>
+                    </div>
+                    <div class="exp-item interactive" onclick="openModal('visi')">
+                        <div class="exp-year">2024 - 2025</div>
+                        <div class="exp-details">
+                            <h3>QA Engineer</h3>
+                            <span>Visi Prima Nusantara <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px; color: var(--accent);"></i></span>
+                        </div>
+                    </div>
+                    <div class="exp-item interactive" onclick="openModal('sekawan')">
+                        <div class="exp-year">2023 - 2024</div>
+                        <div class="exp-details">
+                            <h3>QA Engineer Intern</h3>
+                            <span>Sekawan Media <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px; color: var(--accent);"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Skills Card (Interactive) -->
+            <div class="bento-card skills-card reveal" style="transition-delay: 0.4s;">
+                <div class="card-header">
+                    <i class="fas fa-code-branch icon"></i>
+                    <h2>Tech Stack</h2>
+                </div>
+                <div class="skills-wrapper">
+                    <div class="skill-bubble interactive" onclick="openModal('cypress')">Cypress</div>
+                    <div class="skill-bubble interactive" onclick="openModal('selenium')">Selenium</div>
+                    <div class="skill-bubble interactive" onclick="openModal('restassured')">REST-Assured</div>
+                    <div class="skill-bubble interactive" onclick="openModal('bdd')">Cucumber / BDD</div>
+                    <div class="skill-bubble interactive" onclick="openModal('java_js')">Java & JS</div>
+                    <div class="skill-bubble interactive" onclick="openModal('php')">PHP</div>
+                    <div class="skill-bubble interactive" onclick="openModal('jira')">JIRA & Postman</div>
+                </div>
+            </div>
+
+            <!-- 5. Featured Projects Card (Interactive) -->
+            <div class="bento-card projects-card reveal" style="transition-delay: 0.5s;">
+                <div class="card-header">
+                    <i class="fas fa-rocket icon"></i>
+                    <h2>Featured Projects</h2>
+                </div>
+                <div class="projects-carousel">
+                    
+                    <div class="project-item" onclick="openModal('velodiva')">
+                        <div class="project-icon"><i class="fas fa-music"></i></div>
+                        <div class="project-text">
+                            <h3>Velodiva Music Player</h3>
+                            <p>Automated E2E testing via Cypress for commercial playback modules.</p>
+                            <span class="click-hint">Read Case Study <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="project-item" onclick="openModal('hrms')">
+                        <div class="project-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="project-text">
+                            <h3>Portal Kerja HRMS</h3>
+                            <p>Manual QA ensuring data integrity for employee logs and HR workflows.</p>
+                            <span class="click-hint">Read Case Study <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="project-item" onclick="openModal('sekolah')">
+                        <div class="project-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="project-text">
+                            <h3>Portal Sekolah</h3>
+                            <p>System testing for LMS, School Admin, and Admission (SPMB) features.</p>
+                            <span class="click-hint">Read Case Study <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Background -->
+    <div id="projectModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <i id="modalIcon" class="fas fa-project-diagram"></i>
+                <h2 id="modalTitle">Modal Title</h2>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="style/script/script.js"></script>
+</body>
+</html>
