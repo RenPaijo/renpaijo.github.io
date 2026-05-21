@@ -26,4 +26,4 @@ Since this is a purely static website, no build tools, dependencies, or installa
 
 1. Clone this repository: 
    ```bash
-   git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/yourusername/your-repo-name.git)
+   git clone [https://github.com/RenPaijo/renpaijo.github.io)
