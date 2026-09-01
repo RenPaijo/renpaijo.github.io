@@ -92,7 +92,15 @@ revealAll();
 navToggle?.addEventListener('click', toggleMenu);
 
 for (const link of navLinks) {
-  link.addEventListener('click', closeMenu);
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    const targetId = link.getAttribute('href');
+    const targetElement = targetId ? document.querySelector(targetId) : null;
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+    closeMenu();
+  });
 }
 
 window.addEventListener(
