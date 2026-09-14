@@ -1,6 +1,7 @@
 document.documentElement.classList.add('js-enabled');
 
 const header = document.querySelector('[data-header]');
+const brandLink = document.querySelector('.brand');
 const navToggle = document.querySelector('[data-nav-toggle]');
 const navLinks = [...document.querySelectorAll('.site-nav a')];
 const trackedSections = navLinks
@@ -9,6 +10,8 @@ const trackedSections = navLinks
 const revealNodes = [...document.querySelectorAll('.reveal')];
 const progressBar = document.querySelector('#scroll-progress');
 const tiltCard = document.querySelector('[data-tilt-card]');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const backToTop = document.querySelector('[data-back-to-top]');
 
 const showRevealNode = node => {
   node.classList.add('is-visible');
@@ -35,6 +38,14 @@ const toggleMenu = () => {
   navToggle.setAttribute('aria-expanded', String(!isOpen));
 };
 
+const scrollToTarget = targetElement => {
+  targetElement?.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+};
+
+const clearUrlHash = () => {
+  history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+};
+
 const updateActiveLink = () => {
   const offset = window.scrollY + 220;
   let currentId = trackedSections[0]?.id ?? '';
@@ -48,6 +59,12 @@ const updateActiveLink = () => {
   for (const link of navLinks) {
     link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
   }
+
+};
+
+const updateFloatingControls = () => {
+  const isScrolled = window.scrollY > 520;
+  backToTop?.classList.toggle('is-visible', isScrolled);
 };
 
 const updateProgress = () => {
@@ -91,14 +108,22 @@ revealAll();
 
 navToggle?.addEventListener('click', toggleMenu);
 
+brandLink?.addEventListener('click', event => {
+  event.preventDefault();
+  scrollToTarget(document.querySelector('#top'));
+  clearUrlHash();
+  closeMenu();
+});
+
 for (const link of navLinks) {
   link.addEventListener('click', event => {
     event.preventDefault();
     const targetId = link.getAttribute('href');
     const targetElement = targetId ? document.querySelector(targetId) : null;
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      scrollToTarget(targetElement);
     }
+    clearUrlHash();
     closeMenu();
   });
 }
@@ -108,6 +133,7 @@ window.addEventListener(
   () => {
     updateActiveLink();
     updateProgress();
+    updateFloatingControls();
   },
   { passive: true }
 );
@@ -115,14 +141,16 @@ window.addEventListener('resize', closeMenu);
 window.addEventListener('load', () => {
   updateActiveLink();
   updateProgress();
+  updateFloatingControls();
   revealAll();
 });
 
 updateActiveLink();
 updateProgress();
+updateFloatingControls();
 revealAll();
 
-if (tiltCard && window.matchMedia('(pointer:fine)').matches) {
+if (tiltCard && window.matchMedia('(pointer:fine)').matches && !prefersReducedMotion.matches) {
   const limit = 8;
 
   tiltCard.addEventListener('pointermove', event => {
