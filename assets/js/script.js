@@ -7,6 +7,7 @@ const navLinks = [...document.querySelectorAll('.site-nav a')];
 const trackedSections = navLinks
   .map(link => document.querySelector(link.getAttribute('href')))
   .filter(Boolean);
+let activeSectionId = '';
 const revealNodes = [...document.querySelectorAll('.reveal')];
 const progressBar = document.querySelector('#scroll-progress');
 const tiltCard = document.querySelector('[data-tilt-card]');
@@ -47,14 +48,24 @@ const clearUrlHash = () => {
 };
 
 const updateActiveLink = () => {
-  const offset = window.scrollY + 220;
-  let currentId = trackedSections[0]?.id ?? '';
-
-  for (const section of trackedSections) {
-    if (offset >= section.offsetTop) {
-      currentId = section.id;
-    }
+  // Keep the landing view neutral. Once the page is scrolled, activate the
+  // section that occupies the visual centre of the viewport rather than the
+  // last section whose document offset has been crossed. This prevents the
+  // previous item (for example Credentials) staying active while Contact is
+  // already the section the visitor is viewing.
+  if (window.scrollY < 120) {
+    activeSectionId = '';
   }
+
+  const focusLine = window.innerHeight * 0.5;
+  const currentSection = trackedSections.find(section => {
+    const bounds = section.getBoundingClientRect();
+    return bounds.top <= focusLine && bounds.bottom > focusLine;
+  });
+  if (currentSection && window.scrollY >= 120) {
+    activeSectionId = currentSection.id;
+  }
+  const currentId = activeSectionId;
 
   for (const link of navLinks) {
     link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
@@ -144,6 +155,10 @@ window.addEventListener('load', () => {
   updateFloatingControls();
   revealAll();
 });
+
+// The hero is the neutral landing state; do not mark the first content link
+// active until the visitor has moved past it.
+navLinks.forEach(link => link.classList.remove('active'));
 
 updateActiveLink();
 updateProgress();
