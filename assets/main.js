@@ -318,10 +318,9 @@
           navWrap.classList.add('is-hidden');
         }
       }, 1000);
-      // replaceState throws on some file:// and sandboxed origins.
-      try {
-        if (window.history && history.replaceState) history.replaceState(null, '', id);
-      } catch (err) { /* non-fatal */ }
+      // NOTE: the URL hash is intentionally left untouched so the address bar
+      // stays clean (no #section suffix) after nav clicks. preventDefault()
+      // above already stops the native jump that would set it.
     });
   });
 })();
