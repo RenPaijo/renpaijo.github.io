@@ -348,8 +348,9 @@
       var target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      // Top-aligned landing: park the section top just below the sticky nav.
-      var offset = navWrap ? navWrap.offsetHeight + 28 : 100;
+      // Top-aligned landing: park the section top just below the sticky nav
+      // with breathing room (≈118px desktop / ≈112px mobile).
+      var offset = navWrap ? navWrap.offsetHeight + 46 : 118;
       var top = target.getBoundingClientRect().top + window.scrollY - offset;
       var maxTop = document.documentElement.scrollHeight - window.innerHeight;
       top = Math.max(0, Math.min(top, Math.max(0, maxTop)));
