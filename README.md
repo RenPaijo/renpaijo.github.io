@@ -71,4 +71,4 @@ I bring a disciplined and detail-oriented mindset to QA work without losing sigh
 - **LinkedIn:** [Aldan Maulana Fajri](https://www.linkedin.com/in/aldanmf/)
 - **GitHub:** [RenPaijo](https://github.com/RenPaijo)
 
-For more details, please see the [professional portfolio](index.html) or [download the CV](assets/Aldan-Maulana-Fajri-CV.pdf).
+For more details, please see the [professional portfolio](index.html) or [download the CV](assets/docs/Aldan-Maulana-Fajri-CV.pdf).

@@ -291,6 +291,49 @@
       }
     });
   });
+  /* ---------- 8b. QA CASE-STUDY DIALOGS ---------- */
+  // Native <dialog> when available; hidden-attribute fallback keeps content
+  var caseOpener = null;
+  function openCase(id) {
+    var dlg = document.getElementById('case-' + id);
+    if (!dlg) return;
+    caseOpener = document.activeElement;
+    if (typeof dlg.showModal === 'function') {
+      if (!dlg.open) dlg.showModal();
+    } else {
+      dlg.setAttribute('open', '');
+      dlg.classList.add('is-fallback-open');
+    }
+    document.body.style.overflow = 'hidden';
+    var focusTarget = dlg.querySelector('[data-case-close]') || dlg;
+    if (focusTarget && focusTarget.focus) focusTarget.focus();
+  }
+  function closeCase(dlg) {
+    if (!dlg) return;
+    if (typeof dlg.close === 'function' && dlg.open) {
+      dlg.close();
+    } else {
+      dlg.removeAttribute('open');
+      dlg.classList.remove('is-fallback-open');
+    }
+    document.body.style.overflow = '';
+    if (caseOpener && caseOpener.focus) caseOpener.focus();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-case-open]'), function (btn) {
+    btn.addEventListener('click', function () { openCase(btn.getAttribute('data-case-open')); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.case-dialog'), function (dlg) {
+    Array.prototype.forEach.call(dlg.querySelectorAll('[data-case-close]'), function (btn) {
+      btn.addEventListener('click', function () { closeCase(dlg); });
+    });
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) closeCase(dlg);
+    });
+    dlg.addEventListener('close', function () {
+      document.body.style.overflow = '';
+      if (caseOpener && caseOpener.focus) caseOpener.focus();
+    });
+  });
 
   /* ---------- 9. MISC ---------- */
   var yearEl = document.getElementById('year');
@@ -305,10 +348,11 @@
       var target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      // Breathing room below the sticky nav so the section eyebrow never
-      // sits tight against it.
+      // Top-aligned landing: park the section top just below the sticky nav.
       var offset = navWrap ? navWrap.offsetHeight + 28 : 100;
       var top = target.getBoundingClientRect().top + window.scrollY - offset;
+      var maxTop = document.documentElement.scrollHeight - window.innerHeight;
+      top = Math.max(0, Math.min(top, Math.max(0, maxTop)));
       window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' });
       // After a nav jump, tuck the sticky nav away so the landing always looks
       // like a downward scroll (full viewport for content). Any later scroll
