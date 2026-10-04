@@ -416,30 +416,31 @@ b, strong { font-weight: 700; color: var(--text); }
 .portrait-card { position: relative; }
 .portrait-frame {
   position: relative; z-index: 2;
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  border: 1px solid var(--border-2);
-  box-shadow: var(--shadow-lg);
-  /* Deep gradient stage so the transparent cutout reads on both themes. */
-  background: linear-gradient(160deg, #141422 0%, #0C0C13 55%, #101826 100%);
-  transform: rotate(1.4deg);
-  transition: transform 500ms var(--ease);
+  /* Borderless: the cutout floats straight on the hero background. */
+  border: 0; border-radius: 0; overflow: visible;
+  background: none; box-shadow: none;
+  transform: none;
 }
-.portrait-card:hover .portrait-frame { transform: rotate(0deg); }
-/* `height: auto` is required: the HTML width/height attributes would otherwise
-   supply a definite height and make `aspect-ratio` inert. */
+.portrait-card:hover .portrait-frame { transform: none; }
+/* Natural PNG ratio; bottom feather so the bust melts into the hero. */
 .portrait-frame img {
-  width: 100%; height: auto; aspect-ratio: 3/4;
-  object-fit: cover; object-position: 50% 26%;
-  /* Lift the dark hoodie off the dark stage; doubles as rim light on light mode. */
-  filter: drop-shadow(0 18px 34px rgba(0,0,0,.55)) drop-shadow(0 0 22px rgba(99,102,241,.28));
+  display: block;
+  width: 112%; max-width: none; margin-left: -6%; margin-bottom: -26px;
+  height: auto; aspect-ratio: auto;
+  -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
+  mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
+  /* Separation so the dark hoodie lifts off the dark hero; rim glow on light. */
+  filter: drop-shadow(0 24px 38px rgba(0,0,0,.5)) drop-shadow(0 0 26px rgba(99,102,241,.3));
+}
+[data-theme="light"] .portrait-frame img {
+  filter: drop-shadow(0 22px 30px rgba(20,20,60,.28)) drop-shadow(0 0 24px rgba(99,102,241,.22));
 }
 
 .portrait-glow {
-  position: absolute; inset: 8% -6% -8% -6%; z-index: 0;
-  border-radius: var(--r-xl);
+  position: absolute; inset: 4% -10% -10% -10%; z-index: 0;
+  border-radius: 50%;
   background: var(--grad-brand);
-  filter: blur(48px); opacity: .42;
+  filter: blur(70px); opacity: .38;
 }
 
 .float-card {
