@@ -422,13 +422,13 @@ b, strong { font-weight: 700; color: var(--text); }
   transform: none;
   transition: transform 500ms var(--ease);
 }
-/* Natural PNG ratio; bottom feather so the bust melts into the hero. */
+/* Feather is baked into the PNG (140px bottom, 22px sides/top) — no CSS mask,
+   since masks paint rectangular fades that read as a border when drop-shadows
+   intensify on hover. */
 .portrait-frame img {
   display: block;
   width: 112%; max-width: none; margin-left: -6%; margin-bottom: -26px;
   height: auto; aspect-ratio: auto;
-  -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
-  mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
   /* Separation so the dark hoodie lifts off the dark hero; rim glow on light. */
   filter: drop-shadow(0 24px 38px rgba(0,0,0,.5)) drop-shadow(0 0 26px rgba(99,102,241,.3));
   transition: transform 500ms var(--ease), filter 500ms var(--ease);
