@@ -867,6 +867,7 @@ b, strong { font-weight: 700; color: var(--text); }
 .contact-actions {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 13px; margin-top: 34px;
 }
+.contact-actions .btn { max-width: 100%; text-align: center; }
 
 /* Split-panel contact: pitch on the left, labelled direct channels on the right.
    Reuses the same tokens as the old centered card; no new palette. */
@@ -993,7 +994,7 @@ b, strong { font-weight: 700; color: var(--text); }
   .float-status { left: -8px; top: 6%; }
   .float-gpa { right: -8px; bottom: 5%; }
   .code-card { margin-left: 12px; }
-  .contact-actions .btn { width: 100%; }
+  .contact-actions .btn { white-space: nowrap; font-size: .85rem; padding: 13px 16px; }
 }
 
 @media (max-width: 560px) {
