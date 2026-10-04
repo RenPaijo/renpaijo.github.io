@@ -420,8 +420,8 @@ b, strong { font-weight: 700; color: var(--text); }
   border: 0; border-radius: 0; overflow: visible;
   background: none; box-shadow: none;
   transform: none;
+  transition: transform 500ms var(--ease);
 }
-.portrait-card:hover .portrait-frame { transform: none; }
 /* Natural PNG ratio; bottom feather so the bust melts into the hero. */
 .portrait-frame img {
   display: block;
@@ -431,9 +431,20 @@ b, strong { font-weight: 700; color: var(--text); }
   mask-image: linear-gradient(to bottom, #000 88%, transparent 99%);
   /* Separation so the dark hoodie lifts off the dark hero; rim glow on light. */
   filter: drop-shadow(0 24px 38px rgba(0,0,0,.5)) drop-shadow(0 0 26px rgba(99,102,241,.3));
+  transition: transform 500ms var(--ease), filter 500ms var(--ease);
 }
 [data-theme="light"] .portrait-frame img {
   filter: drop-shadow(0 22px 30px rgba(20,20,60,.28)) drop-shadow(0 0 24px rgba(99,102,241,.22));
+}
+/* Hover: the old card had a straighten + glow payoff — bring it back as a
+   straighten of the bust, a stronger aura and a lifted rim light. */
+.portrait-card:hover .portrait-frame { transform: rotate(-1deg) scale(1.015); }
+.portrait-card:hover .portrait-frame img {
+  transform: translateY(-6px);
+  filter: drop-shadow(0 30px 44px rgba(0,0,0,.55)) drop-shadow(0 0 38px rgba(99,102,241,.45)) drop-shadow(0 0 90px rgba(34,211,238,.22));
+}
+[data-theme="light"] .portrait-card:hover .portrait-frame img {
+  filter: drop-shadow(0 28px 36px rgba(20,20,60,.32)) drop-shadow(0 0 38px rgba(99,102,241,.32)) drop-shadow(0 0 90px rgba(34,211,238,.2));
 }
 
 .portrait-glow {
@@ -441,6 +452,14 @@ b, strong { font-weight: 700; color: var(--text); }
   border-radius: 50%;
   background: var(--grad-brand);
   filter: blur(70px); opacity: .38;
+  transition: opacity 500ms var(--ease), filter 500ms var(--ease), transform 500ms var(--ease);
+}
+.portrait-card:hover .portrait-glow { opacity: .6; filter: blur(60px); transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .portrait-frame, .portrait-frame img, .portrait-glow { transition: none; }
+  .portrait-card:hover .portrait-frame,
+  .portrait-card:hover .portrait-frame img,
+  .portrait-card:hover .portrait-glow { transform: none; }
 }
 
 .float-card {
