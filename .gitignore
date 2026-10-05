@@ -1,0 +1,5 @@
+# Local-only: never deploy to Pages
+.playwright-mcp/
+icon.png
+instruction.txt
+portfolio-ui-reference-v2.png

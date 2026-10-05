@@ -185,7 +185,10 @@
     if (window.scrollY < window.innerHeight * 0.55) currentId = null;
 
     navAnchors.forEach(function (a) {
-      a.classList.toggle('is-active', a.getAttribute('href') === '#' + currentId);
+      var active = a.getAttribute('href') === '#' + currentId;
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
     });
   }
 
@@ -207,6 +210,8 @@
     var suffix = el.getAttribute('data-suffix') || '';
     var duration = 1300;
 
+    // Suffix mid-tween reads wrong (e.g. "3/6" while counting to "6 / 6"):
+    // count bare digits, stamp the formatted value on completion.
     if (reduceMotion) { el.textContent = target + suffix; return; }
 
     var start = null;
@@ -214,8 +219,12 @@
       if (start === null) start = ts;
       var p = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) window.requestAnimationFrame(step);
+      if (p < 1) {
+        el.textContent = String(Math.round(target * eased));
+        window.requestAnimationFrame(step);
+      } else {
+        el.textContent = target + suffix;
+      }
     }
     window.requestAnimationFrame(step);
   }
@@ -328,6 +337,28 @@
     });
     dlg.addEventListener('click', function (e) {
       if (e.target === dlg) closeCase(dlg);
+    });
+    // Keep keyboard users inside the open dialog (both native showModal and
+    // the non-modal fallback); Escape covers the fallback path, where the
+    // browser provides no native Esc-to-close.
+    dlg.addEventListener('keydown', function (e) {
+      var isTab = e.key === 'Tab' || e.keyCode === 9;
+      var isEsc = e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+      if (isEsc) { closeCase(dlg); return; }
+      if (!isTab) return;
+      var focusables = dlg.querySelectorAll(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      var list = Array.prototype.filter.call(focusables, function (el) {
+        return el.offsetParent !== null || el === document.activeElement;
+      });
+      if (!list.length) { e.preventDefault(); return; }
+      var first = list[0];
+      var last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
     });
     dlg.addEventListener('close', function () {
       document.body.style.overflow = '';

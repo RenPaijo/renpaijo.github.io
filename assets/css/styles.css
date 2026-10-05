@@ -119,12 +119,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 b, strong { font-weight: 700; color: var(--text); }
 
-:focus-visible {
-  outline: 2px solid var(--indigo-l);
+::focus-visible {
+  outline: 2px solid var(--brand-txt);
   outline-offset: 3px;
   border-radius: 6px;
 }
 ::selection { background: rgba(99,102,241,.35); color: #fff; }
+[data-theme="light"] ::selection { color: #0B0B14; }
 
 .skip-link {
   position: fixed; top: 10px; left: 10px; z-index: 100;
@@ -232,7 +233,7 @@ b, strong { font-weight: 700; color: var(--text); }
 .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
 .icon-btn {
-  width: 40px; height: 40px; display: grid; place-items: center;
+  width: 44px; height: 44px; display: grid; place-items: center;
   border-radius: 11px; border: 1px solid var(--border);
   background: var(--surface); color: var(--text-soft);
   transition: color var(--t-fast), border-color var(--t-fast), background-color var(--t-fast);
@@ -415,27 +416,51 @@ b, strong { font-weight: 700; color: var(--text); }
 .portrait-card { position: relative; }
 .portrait-frame {
   position: relative; z-index: 2;
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  border: 1px solid var(--border-2);
-  box-shadow: var(--shadow-lg);
-  background: var(--bg-soft);
-  transform: rotate(1.4deg);
+  /* Borderless: the cutout floats straight on the hero background. */
+  border: 0; border-radius: 0; overflow: visible;
+  background: none; box-shadow: none;
+  transform: none;
   transition: transform 500ms var(--ease);
 }
-.portrait-card:hover .portrait-frame { transform: rotate(0deg); }
-/* `height: auto` is required: the HTML width/height attributes would otherwise
-   supply a definite height and make `aspect-ratio` inert. */
+/* Feather is baked into the PNG (140px bottom, 22px sides/top) — no CSS mask,
+   since masks paint rectangular fades that read as a border when drop-shadows
+   intensify on hover. */
+.portrait-frame picture { display: block; }
 .portrait-frame img {
-  width: 100%; height: auto; aspect-ratio: 4/5;
-  object-fit: cover; object-position: 50% 26%;
+  display: block;
+  width: 112%; max-width: none; margin-left: -6%; margin-bottom: -26px;
+  height: auto; aspect-ratio: auto;
+  /* Separation so the dark hoodie lifts off the dark hero; rim glow on light. */
+  filter: drop-shadow(0 24px 38px rgba(0,0,0,.5)) drop-shadow(0 0 26px rgba(99,102,241,.3));
+  transition: transform 500ms var(--ease), filter 500ms var(--ease);
+}
+[data-theme="light"] .portrait-frame img {
+  filter: drop-shadow(0 22px 30px rgba(20,20,60,.28)) drop-shadow(0 0 24px rgba(99,102,241,.22));
+}
+/* Hover: the old card had a straighten + glow payoff — bring it back as a
+   straighten of the bust, a stronger aura and a lifted rim light. */
+.portrait-card:hover .portrait-frame { transform: rotate(-1deg) scale(1.015); }
+.portrait-card:hover .portrait-frame img {
+  transform: translateY(-6px);
+  filter: drop-shadow(0 30px 44px rgba(0,0,0,.55)) drop-shadow(0 0 38px rgba(99,102,241,.45)) drop-shadow(0 0 90px rgba(34,211,238,.22));
+}
+[data-theme="light"] .portrait-card:hover .portrait-frame img {
+  filter: drop-shadow(0 28px 36px rgba(20,20,60,.32)) drop-shadow(0 0 38px rgba(99,102,241,.32)) drop-shadow(0 0 90px rgba(34,211,238,.2));
 }
 
 .portrait-glow {
-  position: absolute; inset: 8% -6% -8% -6%; z-index: 0;
-  border-radius: var(--r-xl);
+  position: absolute; inset: 4% -10% -10% -10%; z-index: 0;
+  border-radius: 50%;
   background: var(--grad-brand);
-  filter: blur(48px); opacity: .42;
+  filter: blur(70px); opacity: .38;
+  transition: opacity 500ms var(--ease), filter 500ms var(--ease), transform 500ms var(--ease);
+}
+.portrait-card:hover .portrait-glow { opacity: .6; filter: blur(60px); transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .portrait-frame, .portrait-frame img, .portrait-glow { transition: none; }
+  .portrait-card:hover .portrait-frame,
+  .portrait-card:hover .portrait-frame img,
+  .portrait-card:hover .portrait-glow { transform: none; }
 }
 
 .float-card {
@@ -482,7 +507,7 @@ b, strong { font-weight: 700; color: var(--text); }
 .code-head i { width: 10px; height: 10px; border-radius: 50%; background: #FF5F57; }
 .code-head i:nth-child(2) { background: #FEBC2E; }
 .code-head i:nth-child(3) { background: #28C840; }
-.code-head span { margin-left: 8px; font-family: var(--font-mono); font-size: .74rem; color: #8B8BA0; }
+.code-head span { margin-left: 8px; font-family: var(--font-mono); font-size: .74rem; color: #A7A7C0; }
 .code-card pre {
   margin: 0; padding: 17px 18px;
   font-family: var(--font-mono); font-size: .775rem; line-height: 1.72;
@@ -663,7 +688,6 @@ b, strong { font-weight: 700; color: var(--text); }
 .project:hover::before { opacity: 1; }
 .project > * { position: relative; z-index: 1; }
 .project-feature { grid-column: span 2; }
-@media (max-width: 900px) { .project-feature { grid-column: span 1; } }
 
 .project-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
 .project-icon {
@@ -730,10 +754,16 @@ b, strong { font-weight: 700; color: var(--text); }
   padding: 0; border: 1px solid var(--border-2); border-radius: var(--r-xl);
   background: var(--bg-soft); color: var(--text);
   box-shadow: var(--shadow-lg);
+  overflow: hidden;
 }
-.case-dialog::backdrop { background: rgba(4,4,10,.68); backdrop-filter: blur(6px); }
+.case-dialog::backdrop { background: rgba(4,4,10,.68); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .case-inner { padding: clamp(22px, 3.4vw, 40px); overflow: auto; overflow-x: clip; max-height: min(88vh, 980px); }
-.case-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.case-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; position: sticky; top: -1px; z-index: 2; background: linear-gradient(var(--bg-soft), var(--bg-soft)) padding-box; padding-block: 12px; margin-top: -12px; }
+.case-inner::after {
+  content: ""; position: sticky; bottom: -1px; display: block; height: 30px; margin-top: -30px;
+  background: linear-gradient(to bottom, transparent, var(--bg-soft) 75%);
+  pointer-events: none;
+}
 .case-dialog h3 { margin: 12px 0 12px; font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -.03em; }
 .case-lede { margin: 0 0 22px; max-width: 68ch; color: var(--text-soft); font-size: .98rem; line-height: 1.75; }
 .case-meta { margin-bottom: 26px; }
@@ -859,17 +889,30 @@ b, strong { font-weight: 700; color: var(--text); }
   max-width: 56ch; margin: 20px auto 0;
   font-size: 1.02rem; color: var(--text-soft);
 }
-.contact-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 13px; margin-top: 34px; }
-
-.contact-socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 11px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border); }
-.contact-socials a {
-  width: 46px; height: 46px; display: grid; place-items: center;
-  border-radius: 13px; border: 1px solid var(--border);
-  background: var(--bg-soft); color: var(--muted);
-  transition: color var(--t-fast), border-color var(--t-fast), transform var(--t-fast), background-color var(--t-fast);
+.contact-actions {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 13px; margin-top: 34px;
 }
-.contact-socials a:hover { color: var(--brand-txt); border-color: var(--brand-txt); transform: translateY(-3px); background: var(--grad-soft); }
-.contact-socials svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.contact-actions .btn { max-width: 100%; text-align: center; }
+
+/* Split-panel contact: pitch on the left, labelled direct channels on the right.
+   Reuses the same tokens as the old centered card; no new palette. */
+.contact-split { display: grid; grid-template-columns: 1.3fr .85fr; gap: clamp(26px, 3.6vw, 48px); text-align: left; align-items: start; }
+.contact-main { min-width: 0; }
+.contact-split .contact-lede { margin-inline: 0; }
+.contact-split .contact-actions { justify-content: flex-start; margin-top: 28px; }
+.contact-points { display: grid; gap: 11px; margin: 26px 0 0; }
+.contact-points li { display: flex; align-items: flex-start; gap: 11px; font-size: .93rem; color: var(--text-soft); }
+.contact-points svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 4px; fill: none; stroke: var(--emerald); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+[data-theme="light"] .contact-points svg { stroke: var(--ok); }
+.contact-side { display: grid; gap: 6px; align-content: start; padding: clamp(18px, 2.4vw, 24px); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg-soft); }
+.contact-side-title { margin: 0 0 8px; font-family: var(--font-mono); font-size: .72rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.channel { display: flex; align-items: center; gap: 13px; padding: 10px 12px; border-radius: var(--r-md); border: 1px solid transparent; transition: border-color var(--t-fast), background-color var(--t-fast), transform var(--t-fast); }
+.channel:hover { border-color: var(--brand-txt); background: var(--grad-soft); transform: translateX(3px); }
+.channel-ico { width: 40px; height: 40px; display: grid; place-items: center; flex-shrink: 0; border-radius: 11px; border: 1px solid var(--border); background: var(--surface-2); color: var(--brand-txt); }
+.channel-ico svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.channel b { display: block; font-size: .9rem; font-weight: 600; }
+.channel i { display: block; font-style: normal; font-size: .79rem; color: var(--muted); overflow-wrap: anywhere; }
+
 
 /* ---------- 15. FOOTER ---------- */
 .footer { border-top: 1px solid var(--border); background: var(--bg-soft); padding: 26px 0; }
@@ -879,7 +922,7 @@ b, strong { font-weight: 700; color: var(--text); }
 .dot-sep { color: var(--border-2); margin: 0 4px; }
 .footer-socials { display: flex; gap: 8px; }
 .footer-socials a {
-  width: 38px; height: 38px; display: grid; place-items: center;
+  width: 44px; height: 44px; display: grid; place-items: center;
   border-radius: 11px; border: 1px solid var(--border);
   background: var(--surface); color: var(--muted);
   transition: color var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
@@ -905,6 +948,8 @@ b, strong { font-weight: 700; color: var(--text); }
 .toast {
   position: fixed; left: 50%; bottom: 28px; z-index: 70;
   transform: translate(-50%, 22px);
+  max-width: calc(100vw - 32px);
+  overflow-wrap: anywhere;
   padding: 12px 22px; border-radius: var(--r-pill);
   background: var(--bg-soft); border: 1px solid var(--border-2);
   box-shadow: var(--shadow-lg);
@@ -962,7 +1007,7 @@ b, strong { font-weight: 700; color: var(--text); }
   .js .nav-links a.is-active { background: var(--surface-2); }
   .js .nav-links a.is-active::after { display: none; }
   .js .menu-btn { display: grid; }
-  .skills-grid, .bento { grid-template-columns: 1fr; }
+  .skills-grid, .bento, .contact-split { grid-template-columns: 1fr; }
   .cred-stack { grid-template-columns: 1fr; }
 }
 
@@ -976,7 +1021,7 @@ b, strong { font-weight: 700; color: var(--text); }
   .float-status { left: -8px; top: 6%; }
   .float-gpa { right: -8px; bottom: 5%; }
   .code-card { margin-left: 12px; }
-  .contact-actions .btn { width: 100%; }
+  .contact-actions .btn { white-space: nowrap; font-size: .85rem; padding: 13px 16px; }
 }
 
 @media (max-width: 560px) {
@@ -1027,14 +1072,32 @@ b, strong { font-weight: 700; color: var(--text); }
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
+  /* The global duration-kill above would make the seamless marquee loop jump to
+     its -50% keyframe in one frame; park it statically instead. */
+  .marquee-track { animation: none !important; transform: none !important; }
   .js .reveal { opacity: 1; transform: none; }
   .portrait-frame { transform: none; }
 }
 
+/* Themed scrollbar: thin, uses the existing border/surface tokens. */
+html { scrollbar-color: var(--border-2) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
 @media print {
   .nav-wrap, .to-top, .toast, .scroll-progress, .noise, .glow-grid,
   .hero-orb, .contact-orb, .code-card, .float-card, .marquee-strip { display: none !important; }
-  body { background: #fff; color: #000; }
-  .section { padding-block: 24px; break-inside: avoid; }
+  body { background: #fff !important; color: #000 !important; }
+  /* Cards keep dark glass surfaces by default — force them onto paper so the
+     printed CV-style page stays legible, and un-clip gradient headlines. */
+  .project, .skill-card, .mini-card, .tl-card, .edu-card, .cred-card, .contact-card, .contact-side, .stat, .case-dialog .case-inner {
+    background: #fff !important; color: #000 !important; border-color: #ccc !important;
+    box-shadow: none !important; backdrop-filter: none !important; break-inside: avoid;
+  }
+  .grad-text { background: none !important; -webkit-text-fill-color: #000 !important; color: #000 !important; }
+  .stat b, .tl-org, .edu-degree, .channel i, .cred-list span, .edu-body p { color: #000 !important; }
+  .case-dialog { position: static !important; border-color: #ccc !important; box-shadow: none !important; }
+  .section { padding-block: 24px; }
   .js .reveal { opacity: 1 !important; transform: none !important; }
 }
