@@ -425,6 +425,7 @@ b, strong { font-weight: 700; color: var(--text); }
 /* Feather is baked into the PNG (140px bottom, 22px sides/top) — no CSS mask,
    since masks paint rectangular fades that read as a border when drop-shadows
    intensify on hover. */
+.portrait-frame picture { display: block; }
 .portrait-frame img {
   display: block;
   width: 112%; max-width: none; margin-left: -6%; margin-bottom: -26px;
