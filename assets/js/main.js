@@ -254,7 +254,6 @@
     }
   }
 
-  /* ---------- 8. COPY EMAIL + TOAST ---------- */
   var toast = document.getElementById('toast');
   var toastTimer = null;
 
@@ -279,24 +278,57 @@
     return ok;
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-email]'), function (btn) {
+  /* ---------- 8. PROTECTED CONTACT LINKS + COPY EMAIL ---------- */
+  // Email + WhatsApp number ship base64-encoded in data attributes so the raw
+  // values never appear in the HTML source; decoded here at runtime.
+  function b64decode(b64) {
+    try { return window.atob ? window.atob(b64) : ''; } catch (e) { return ''; }
+  }
+
+  var copyBtn = document.getElementById('copyEmail');
+  var EMAIL_B64 = copyBtn ? copyBtn.getAttribute('data-email-b64') : '';
+  function getEmail() { return EMAIL_B64 ? b64decode(EMAIL_B64) : ''; }
+
+  // WhatsApp: build the wa.me URL at runtime on load.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-wa-link]'), function (link) {
+    var num = b64decode(link.getAttribute('data-wa-b64') || '');
+    if (num) link.setAttribute('href', 'https://wa.me/' + num);
+  });
+
+  // Email links: set the mailto: href on focus/click so scrapers see no address.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-email-link]'), function (link) {
+    var arm = function () {
+      var email = getEmail();
+      if (email && link.getAttribute('href') !== 'mailto:' + email) {
+        link.setAttribute('href', 'mailto:' + email);
+      }
+    };
+    link.addEventListener('focus', arm);
+    link.addEventListener('click', arm);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-email-b64]'), function (btn) {
     var label = btn.querySelector('[data-copy-label]');
     var original = label ? label.textContent : '';
 
     btn.addEventListener('click', function () {
-      var email = btn.getAttribute('data-email');
+      // Lock the button width before swapping the label so "Copied!" (shorter
+      // text) doesn't shrink the button and shift the hero-cta row.
+      if (!btn.style.minWidth) btn.style.minWidth = btn.offsetWidth + 'px';
+      var email = b64decode(btn.getAttribute('data-email-b64') || '');
+      if (!email) { showToast('Copy failed — try again'); return; }
       var done = function () {
         if (label) label.textContent = 'Copied!';
-        showToast('Email copied: ' + email);
+        showToast('Email copied to clipboard');
         setTimeout(function () { if (label) label.textContent = original; }, 2200);
       };
 
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(email).then(done, function () {
-          if (fallbackCopy(email)) done(); else showToast('Copy failed — email: ' + email);
+          if (fallbackCopy(email)) done(); else showToast('Copy failed — try again');
         });
       } else {
-        if (fallbackCopy(email)) done(); else showToast('Copy failed — email: ' + email);
+        if (fallbackCopy(email)) done(); else showToast('Copy failed — try again');
       }
     });
   });
@@ -375,8 +407,11 @@
   Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function (link) {
     link.addEventListener('click', function (e) {
       var id = link.getAttribute('href');
-      if (!id || id === '#' || id.length < 2) return;
-      var target = document.querySelector(id);
+      // Contact links start as href="#contact" but arm to mailto: on focus/click
+      // (spam protection) — re-read the live attribute and let those navigate.
+      if (!id || id.charAt(0) !== '#' || id.length < 2) return;
+      var target = null;
+      try { target = document.querySelector(id); } catch (e) { return; }
       if (!target) return;
       e.preventDefault();
       // Top-aligned landing: park the section top just below the sticky nav

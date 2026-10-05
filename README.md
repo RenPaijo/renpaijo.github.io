@@ -66,8 +66,7 @@ I bring a disciplined and detail-oriented mindset to QA work without losing sigh
 
 ## Contact
 
-- **Email:** aldanmaulanaf@gmail.com
-- **Phone:** 0823 3413 1788
+- **Contact:** via the [professional portfolio](index.html) (email & WhatsApp links on the Contact section)
 - **LinkedIn:** [Aldan Maulana Fajri](https://www.linkedin.com/in/aldanmf/)
 - **GitHub:** [RenPaijo](https://github.com/RenPaijo)
 
