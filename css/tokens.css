@@ -1,0 +1,123 @@
+/* ============================================================
+   Design tokens - single source of truth for both themes.
+   Values come from the Pencil document (mf-* variables).
+   ============================================================ */
+
+:root {
+  /* Type */
+  --font-display: "Bebas Neue", "Arial Narrow", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Layout */
+  --shell-pad: clamp(20px, 3.9vw, 56px);
+  --shell-max: 1440px;
+  --nav-h: 58px;
+
+  /* Motion */
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-hover: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-micro: 180ms;
+  --dur-reveal: 620ms;
+  --dur-signature: 900ms;
+  --stagger: 55ms;
+
+  /* Radius / strokes - the design is intentionally square */
+  --radius: 0px;
+  --hairline: 1px;
+
+  /* Status (not in the design file, needed for form feedback) */
+  --color-danger: #ff8f6b;
+  --color-success: #9fdfae;
+}
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-background: #15151a;
+  --color-surface: #1d1e23;
+  --color-surface-raised: #22232a;
+  --color-deep: #0b0b0e;
+
+  --color-ink: #f3f0e9;
+  --color-muted: #a5a099;
+  --color-line: #34353b;
+  --color-border-strong: #4a4b52;
+
+  --color-accent: #ff5c1f;
+  --color-accent-text: #ff7a45;
+  --color-accent-soft: rgba(255, 92, 31, 0.12);
+  --color-on-accent: #241f19;
+
+  --color-paper: #ede4d3;
+  --color-paper-sheet: #f5efe1;
+  --color-paper-ink: #241f19;
+  --color-paper-muted: #665e52;
+
+  --color-on-deep: #f3f0e9;
+  --color-on-deep-muted: #a5a099;
+
+  --color-ghost-word: #1b1c21;
+  --color-ghost: #22232a;
+
+  --color-nav-scrim: rgba(11, 11, 14, 0.55);
+  --color-nav-scrim-solid: #0b0b0e;
+
+  --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --shadow-dialog: 0 40px 90px rgba(0, 0, 0, 0.6);
+
+  --color-ink-on-paper: #241f19;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-background: #e7e3da;
+  --color-surface: #f4efe6;
+  --color-surface-raised: #faf6ef;
+  --color-deep: #0b0b0e;
+
+  --color-ink: #1b1a18;
+  --color-muted: #5f5b54;
+  --color-line: #cfc8bc;
+  --color-border-strong: #a9a094;
+
+  --color-accent: #c93a08;
+  --color-accent-text: #a83108;
+  --color-accent-soft: rgba(201, 58, 8, 0.1);
+  --color-on-accent: #fff8f0;
+
+  --color-paper: #ede4d3;
+  --color-paper-sheet: #f5efe1;
+  --color-paper-ink: #241f19;
+  --color-paper-muted: #665e52;
+
+  --color-on-deep: #f3f0e9;
+  --color-on-deep-muted: #a5a099;
+
+  --color-ghost-word: #d4cec1;
+  --color-ghost: #d9d2c4;
+
+  --color-nav-scrim: rgba(244, 239, 230, 0.72);
+  --color-nav-scrim-solid: #f4efe6;
+
+  --color-danger: #a83108;
+  --color-success: #2f6b45;
+
+  --shadow-card: 0 14px 32px rgba(27, 26, 24, 0.08);
+  --shadow-dialog: 0 40px 90px rgba(27, 26, 24, 0.22);
+
+  --color-ink-on-paper: #241f19;
+}

@@ -1,0 +1,20 @@
+# Local-only: never deploy to Pages.
+# Verification harnesses, screenshots and contrast reports.
+verify/
+
+# Design sources and research material (not needed at runtime).
+assets/exports/
+assets/research/
+assets/design/
+
+# Internal working notes. Only the CV PDF is meant to be public.
+assets/docs/*.md
+assets/docs/fidelity-regression.js
+
+# Working files.
+*.pen
+
+# OS / editor noise.
+.DS_Store
+Thumbs.db
+desktop.ini
