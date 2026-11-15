@@ -7,7 +7,7 @@ assets/exports/
 assets/research/
 assets/design/
 
-# Internal working notes. Only the CV PDF is meant to be public.
+# Internal working notes. The CV PDF and portfolio PPTX are public downloads.
 assets/docs/*.md
 assets/docs/fidelity-regression.js
 
