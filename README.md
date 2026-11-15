@@ -53,7 +53,7 @@ Tested New Student Admission (SPMB) and Counseling features for an integrated le
 
 ## Education and Credentials
 
-- **Bakti Indonesia University** — Bachelor’s Degree in Informatics Engineering, expected December 2026.
+- **Bakti Indonesia University** — Bachelor’s Degree in Informatics Engineering, program dates February–November 2026.
 - **Sebelas Maret University** — Associate’s Degree in Informatics Engineering, graduated with a 3.77 GPA.
 - **Alterra Academy** — Quality Engineering immersive program.
 - **Cisco** — Introduction to IoT certificate.
@@ -70,4 +70,4 @@ I bring a disciplined and detail-oriented mindset to QA work without losing sigh
 - **LinkedIn:** [Aldan Maulana Fajri](https://www.linkedin.com/in/aldanmf/)
 - **GitHub:** [RenPaijo](https://github.com/RenPaijo)
 
-For more details, please see the [professional portfolio](index.html) or [download the CV](assets/docs/Aldan%20Maulana%20Fajri%20CV.pdf).
+For more details, please see the [professional portfolio](index.html) or [download the CV](assets/docs/Aldan-Maulana-Fajri-CV.pdf).

@@ -152,7 +152,7 @@ textarea {
 
 .kicker {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--color-accent-text);
@@ -160,7 +160,7 @@ textarea {
 
 .meta {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);

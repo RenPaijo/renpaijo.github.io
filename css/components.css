@@ -50,7 +50,7 @@
 
 .site-nav__dept {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--color-muted);
   white-space: nowrap;
@@ -121,7 +121,7 @@
 
 .cmd-chip {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   color: var(--color-muted);
   border: 1px solid var(--color-line);
@@ -144,7 +144,7 @@
   height: 28px;
   border: 1px solid var(--color-line);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--color-ink);
   transition:
@@ -298,7 +298,7 @@
   padding: 5px 9px;
   border: 1px solid var(--color-line);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -443,7 +443,7 @@ dialog::backdrop {
 
 .field label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--color-muted);
 }
@@ -493,7 +493,7 @@ dialog::backdrop {
 
 .contact-form__note {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   color: var(--color-muted);
 }

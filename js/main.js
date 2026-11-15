@@ -7,7 +7,6 @@
    - contact form states
    - command palette (Ctrl/Cmd + K)
    - back to top + subtle parallax
-   Contract: assets/docs/motion-interaction-handoff.md
    ============================================================ */
 
 (function () {
@@ -18,12 +17,17 @@
   // Fallback copy, used only when i18n.js fails to load so the UI never shows raw keys.
   var FALLBACK_COPY = {
     "form.delivered": "MESSAGE LOGGED - DELIVERY CONFIRMED.",
-    "form.noEndpoint": "DELIVERY NOT CONFIGURED - ADD AN ENDPOINT IN js/config.js",
+    "form.noEndpoint": "Please contact me through LinkedIn instead.",
     "form.error": "CHECK INPUTS - MESSAGE NOT SENT.",
     "form.sending": "SENDING.",
-    "form.mailto": "CONTINUE IN YOUR EMAIL APP. THIS WEBSITE HAS NOT SENT YOUR MESSAGE.",
+    "form.mailto":
+      "CONTINUE IN YOUR EMAIL APP. THIS WEBSITE HAS NOT SENT YOUR MESSAGE.",
     "form.required": "THIS FIELD IS REQUIRED.",
-    "form.submit": "SEND PRIVATE MESSAGE",
+    "form.submit": "OPEN EMAIL APP",
+    "form.send": "SEND MESSAGE",
+    "form.note":
+      "This prepares a draft in your email app. Review it there and send when you’re ready.",
+    "form.deliveryNote": "Your message will be sent directly from this form.",
   };
 
   var T = function (key) {
@@ -60,25 +64,36 @@
     document.documentElement.setAttribute("data-theme", theme);
     if (themeToggle) {
       themeToggle.setAttribute("aria-pressed", String(theme === "light"));
-      themeToggle.setAttribute("aria-label", T(theme === "light" ? "theme.toDark" : "theme.toLight"));
+      themeToggle.setAttribute(
+        "aria-label",
+        T(theme === "light" ? "theme.toDark" : "theme.toLight"),
+      );
     }
     if (themeIcon) {
       themeIcon.textContent = theme === "light" ? "◑" : "◐";
     }
     if (themeMeta) {
-      themeMeta.setAttribute("content", theme === "light" ? "#E7E3DA" : "#15151A");
+      themeMeta.setAttribute(
+        "content",
+        theme === "light" ? "#E7E3DA" : "#15151A",
+      );
     }
     if (persist) {
       write("amf-theme", theme);
     }
   }
 
-  setTheme(document.documentElement.getAttribute("data-theme") || "dark", false);
+  setTheme(
+    document.documentElement.getAttribute("data-theme") || "dark",
+    false,
+  );
 
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
       var next =
-        document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        document.documentElement.getAttribute("data-theme") === "light"
+          ? "dark"
+          : "light";
       setTheme(next, true);
     });
   }
@@ -88,6 +103,19 @@
   var langToggle = document.querySelector("[data-lang-toggle]");
   var langLabel = document.querySelector("[data-lang-label]");
 
+  function syncContactCopy() {
+    var label = document.querySelector("[data-submit-label]");
+    var note = document.querySelector(".contact-form__note");
+    if (label)
+      label.textContent = T(
+        CONFIG.contactEndpoint ? "form.send" : "form.submit",
+      );
+    if (note)
+      note.textContent = T(
+        CONFIG.contactEndpoint ? "form.deliveryNote" : "form.note",
+      );
+  }
+
   function setLang(lang, persist) {
     if (window.AMF_I18N) {
       window.AMF_I18N.apply(lang);
@@ -96,8 +124,16 @@
       langLabel.textContent = lang === "id" ? "ID" : "EN";
     }
     if (langToggle) {
-      langToggle.setAttribute("aria-label", T(lang === "id" ? "lang.toEn" : "lang.toId"));
+      langToggle.setAttribute(
+        "aria-label",
+        T(lang === "id" ? "lang.toEn" : "lang.toId"),
+      );
     }
+    setTheme(
+      document.documentElement.getAttribute("data-theme") || "dark",
+      false,
+    );
+    syncContactCopy();
     if (persist) {
       write("amf-lang", lang);
     }
@@ -107,7 +143,8 @@
 
   if (langToggle) {
     langToggle.addEventListener("click", function () {
-      var next = document.documentElement.getAttribute("lang") === "id" ? "en" : "id";
+      var next =
+        document.documentElement.getAttribute("lang") === "id" ? "en" : "id";
       setLang(next, true);
     });
   }
@@ -116,7 +153,9 @@
 
   var nav = document.querySelector("[data-nav]");
   var navToggle = document.querySelector("[data-nav-toggle]");
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll("[data-nav-link]"));
+  var navLinks = Array.prototype.slice.call(
+    document.querySelectorAll("[data-nav-link]"),
+  );
   var navHero = document.querySelector("#hero");
   var previousNavScroll = Math.max(0, window.scrollY);
   var navWasPastHero = false;
@@ -124,9 +163,12 @@
   function onScrollNav() {
     if (!nav) return;
     var scroll = Math.max(0, window.scrollY);
-    var pastHero = navHero ? navHero.getBoundingClientRect().bottom <= 0 : scroll > 0;
+    var pastHero = navHero
+      ? navHero.getBoundingClientRect().bottom <= 0
+      : scroll > 0;
     var delta = scroll - previousNavScroll;
-    var keepVisible = nav.classList.contains("is-open") || nav.contains(document.activeElement);
+    var keepVisible =
+      nav.classList.contains("is-open") || nav.contains(document.activeElement);
     nav.classList.toggle("is-stuck", scroll > 8);
     if (!pastHero || keepVisible) {
       nav.classList.remove("is-hidden");
@@ -150,7 +192,10 @@
 
   function syncNavScrollLock(open) {
     // The mobile panel is a fixed overlay, so the page behind must not scroll.
-    document.documentElement.classList.toggle("is-nav-open", Boolean(open) && navMobile.matches);
+    document.documentElement.classList.toggle(
+      "is-nav-open",
+      Boolean(open) && navMobile.matches,
+    );
   }
 
   function closeNav() {
@@ -191,7 +236,11 @@
   /* -------------------------- ANCHOR SCROLL ----------------------- */
 
   if (window.location.hash && history.replaceState) {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+    history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search,
+    );
   }
 
   function scrollToTarget(target, focus) {
@@ -200,7 +249,7 @@
     var top = target.getBoundingClientRect().top + window.scrollY - navH - 12;
     window.scrollTo({
       top: Math.max(0, top),
-      behavior: reduceMotion.matches ? "auto" : "smooth"
+      behavior: reduceMotion.matches ? "auto" : "smooth",
     });
 
     if (focus) {
@@ -212,7 +261,7 @@
         function () {
           heading.removeAttribute("tabindex");
         },
-        { once: true }
+        { once: true },
       );
     }
   }
@@ -241,7 +290,8 @@
       .filter(Boolean);
 
     function syncActiveSection() {
-      var line = window.scrollY + (nav ? nav.getBoundingClientRect().height : 0) + 90;
+      var line =
+        window.scrollY + (nav ? nav.getBoundingClientRect().height : 0) + 90;
       var active = null;
       sections.forEach(function (entry) {
         var top = entry.section.getBoundingClientRect().top + window.scrollY;
@@ -265,7 +315,9 @@
 
   /* --------------------------- SCROLL REVEAL ---------------------- */
 
-  var revealNodes = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+  var revealNodes = Array.prototype.slice.call(
+    document.querySelectorAll("[data-reveal]"),
+  );
 
   function showAll() {
     revealNodes.forEach(function (node) {
@@ -281,14 +333,19 @@
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
           var node = entry.target;
-          var siblings = node.parentElement ? Array.prototype.slice.call(node.parentElement.children) : [];
+          var siblings = node.parentElement
+            ? Array.prototype.slice.call(node.parentElement.children)
+            : [];
           var index = Math.max(0, siblings.indexOf(node));
-          node.style.setProperty("--reveal-delay", Math.min(index, 4) * 55 + "ms");
+          node.style.setProperty(
+            "--reveal-delay",
+            Math.min(index, 4) * 55 + "ms",
+          );
           node.classList.add("is-in");
           revealObserver.unobserve(node);
         });
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
     );
 
     revealNodes.forEach(function (node) {
@@ -348,7 +405,9 @@
       if (tickerToggle) {
         tickerToggle.setAttribute("aria-pressed", String(tickerPausedByUser));
         if (tickerLabel) {
-          tickerLabel.textContent = tickerPausedByUser ? T("ticker.resume") : T("ticker.pause");
+          tickerLabel.textContent = tickerPausedByUser
+            ? T("ticker.resume")
+            : T("ticker.pause");
         }
       }
     }
@@ -379,7 +438,8 @@
   if (heroMarquee) {
     var heroMarqueeOffscreen = false;
     function syncHeroMarquee() {
-      var paused = heroMarqueeOffscreen || document.hidden || reduceMotion.matches;
+      var paused =
+        heroMarqueeOffscreen || document.hidden || reduceMotion.matches;
       heroMarquee.classList.toggle("is-paused", paused);
       var stickers = document.querySelector(".hero__stickers");
       if (stickers) stickers.classList.toggle("is-paused", paused);
@@ -395,24 +455,20 @@
     syncHeroMarquee();
   }
 
-  document.querySelectorAll(".sheet a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      link.closest(".sheet").classList.add("is-opened");
-    });
-  });
-
-  Array.prototype.slice.call(document.querySelectorAll("[data-tape]")).forEach(function (tape) {
-    var count = 90;
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < count; i += 1) {
-      var bar = document.createElement("span");
-      if (i % 6 === 0) {
-        bar.className = "is-accent";
+  Array.prototype.slice
+    .call(document.querySelectorAll("[data-tape]"))
+    .forEach(function (tape) {
+      var count = 90;
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < count; i += 1) {
+        var bar = document.createElement("span");
+        if (i % 6 === 0) {
+          bar.className = "is-accent";
+        }
+        fragment.appendChild(bar);
       }
-      fragment.appendChild(bar);
-    }
-    tape.appendChild(fragment);
-  });
+      tape.appendChild(fragment);
+    });
 
   /* -------------------------- AMBIENT MOTION ---------------------- */
 
@@ -420,14 +476,17 @@
      their node is on screen and the tab is visible. Fail open when
      IntersectionObserver is unavailable. */
 
-  var ambientNodes = Array.prototype.slice.call(document.querySelectorAll("[data-ambient]"));
+  var ambientNodes = Array.prototype.slice.call(
+    document.querySelectorAll("[data-ambient]"),
+  );
   var ambientOnScreen = ambientNodes.map(function () {
     return true;
   });
 
   function syncAmbient() {
     ambientNodes.forEach(function (node, index) {
-      var live = ambientOnScreen[index] && !document.hidden && !reduceMotion.matches;
+      var live =
+        ambientOnScreen[index] && !document.hidden && !reduceMotion.matches;
       node.classList.toggle("is-live", live);
     });
     document.documentElement.classList.toggle("is-hidden", document.hidden);
@@ -444,7 +503,7 @@
           });
           syncAmbient();
         },
-        { rootMargin: "80px 0px" }
+        { rootMargin: "80px 0px" },
       );
 
       ambientNodes.forEach(function (node) {
@@ -496,11 +555,13 @@
   });
 
   if (contactDialog) {
-    contactDialog.querySelectorAll("[data-contact-close]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        closeDialog(contactDialog);
+    contactDialog
+      .querySelectorAll("[data-contact-close]")
+      .forEach(function (button) {
+        button.addEventListener("click", function () {
+          closeDialog(contactDialog);
+        });
       });
-    });
 
     contactDialog.addEventListener("click", function (event) {
       if (event.target === contactDialog) {
@@ -509,7 +570,10 @@
     });
 
     contactDialog.addEventListener("close", function () {
-      document.body.classList.toggle("is-locked", !!document.querySelector("dialog[open]"));
+      document.body.classList.toggle(
+        "is-locked",
+        !!document.querySelector("dialog[open]"),
+      );
       if (formStatus) {
         formStatus.textContent = "";
         formStatus.removeAttribute("data-state");
@@ -527,7 +591,9 @@
   }
 
   function errorNode(name) {
-    return contactForm ? contactForm.querySelector('[data-error-for="' + name + '"]') : null;
+    return contactForm
+      ? contactForm.querySelector('[data-error-for="' + name + '"]')
+      : null;
   }
 
   function setFieldError(name, message) {
@@ -561,7 +627,10 @@
     var emailValue = email ? email.value.trim() : "";
     var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailValue);
     if (!emailOk) {
-      setFieldError("email", T(emailValue ? "form.email.invalid" : "form.required"));
+      setFieldError(
+        "email",
+        T(emailValue ? "form.email.invalid" : "form.required"),
+      );
       errors += 1;
     } else {
       setFieldError("email", "");
@@ -590,7 +659,11 @@
   if (contactForm) {
     contactForm.addEventListener("input", function (event) {
       var field = event.target;
-      if (field && field.name && field.getAttribute("aria-invalid") === "true") {
+      if (
+        field &&
+        field.name &&
+        field.getAttribute("aria-invalid") === "true"
+      ) {
         setFieldError(field.name, "");
       }
     });
@@ -615,16 +688,28 @@
       var payload = {
         name: fieldOf("name").value.trim(),
         email: fieldOf("email").value.trim(),
-        message: fieldOf("message").value.trim()
+        message: fieldOf("message").value.trim(),
       };
 
       if (!CONFIG.contactEndpoint) {
         // No delivery configured yet: fall back to the visitor's mail client.
         if (CONFIG.contactEmail) {
-          var subject = encodeURIComponent("Private request from " + payload.name);
-          var body = encodeURIComponent(payload.message + "\n\n— " + payload.name + " <" + payload.email + ">");
+          var subject = encodeURIComponent("QA opportunity / " + payload.name);
+          var body = encodeURIComponent(
+            payload.message +
+              "\n\n— " +
+              payload.name +
+              " <" +
+              payload.email +
+              ">",
+          );
           window.location.href =
-            "mailto:" + CONFIG.contactEmail + "?subject=" + subject + "&body=" + body;
+            "mailto:" +
+            CONFIG.contactEmail +
+            "?subject=" +
+            subject +
+            "&body=" +
+            body;
           setStatus(T("form.mailto"), "success");
         } else {
           setStatus(T("form.noEndpoint"), "error");
@@ -638,8 +723,11 @@
 
       fetch(CONFIG.contactEndpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload)
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
       })
         .then(function (response) {
           if (!response.ok) throw new Error("Request failed");
@@ -656,7 +744,7 @@
         })
         .then(function () {
           submitButton.disabled = false;
-          if (submitLabel) submitLabel.textContent = T("form.submit");
+          syncContactCopy();
         });
     });
   }
@@ -676,41 +764,74 @@
     /* HOME is not in the nav; the palette is where it lives. */
     var heroSection = document.querySelector("#hero");
     if (heroSection) {
-      commands.push({ label: T("palette.home"), hint: "SECTION", run: function () {
-        closeDialog(palette);
-        scrollToTarget(heroSection, true);
-      }});
+      commands.push({
+        label: T("palette.home"),
+        hint: "SECTION",
+        run: function () {
+          closeDialog(palette);
+          scrollToTarget(heroSection, true);
+        },
+      });
     }
 
-    Array.prototype.slice.call(document.querySelectorAll("[data-nav-link]")).forEach(function (link) {
-      commands.push({ label: link.textContent.trim(), hint: "SECTION", run: function () {
-        var target = document.querySelector(link.getAttribute("href"));
-        closeDialog(palette);
-        scrollToTarget(target, true);
-      }});
-    });
+    Array.prototype.slice
+      .call(document.querySelectorAll("[data-nav-link]"))
+      .forEach(function (link) {
+        commands.push({
+          label: link.textContent.trim(),
+          hint: "SECTION",
+          run: function () {
+            var target = document.querySelector(link.getAttribute("href"));
+            closeDialog(palette);
+            scrollToTarget(target, true);
+          },
+        });
+      });
 
-    Array.prototype.slice.call(document.querySelectorAll("main section[id]")).forEach(function (section) {
-      var heading = section.querySelector("h1, h2");
-      if (!heading) return;
-      commands.push({ label: heading.textContent.replace(/\s+/g, " ").trim(), hint: "JUMP", run: function () {
-        closeDialog(palette);
-        scrollToTarget(section, true);
-      }});
-    });
+    Array.prototype.slice
+      .call(document.querySelectorAll("main section[id]"))
+      .forEach(function (section) {
+        var heading = section.querySelector("h1, h2");
+        if (!heading) return;
+        commands.push({
+          label: heading.textContent.replace(/\s+/g, " ").trim(),
+          hint: "JUMP",
+          run: function () {
+            closeDialog(palette);
+            scrollToTarget(section, true);
+          },
+        });
+      });
 
-    commands.push({ label: T("palette.cv"), hint: "FILE", run: function () {
-      closeDialog(palette);
-      window.location.href = "assets/docs/Aldan-Maulana-Fajri-CV.pdf";
-    }});
-    commands.push({ label: T("palette.contact"), hint: "FORM", run: function () {
-      closeDialog(palette);
-      openDialog(contactDialog);
-    }});
-    commands.push({ label: T("palette.theme"), hint: "SYSTEM", run: function () {
-      closeDialog(palette);
-      setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light", true);
-    }});
+    commands.push({
+      label: T("palette.cv"),
+      hint: "FILE",
+      run: function () {
+        closeDialog(palette);
+        window.location.href = "assets/docs/Aldan-Maulana-Fajri-CV.pdf";
+      },
+    });
+    commands.push({
+      label: T("palette.contact"),
+      hint: "FORM",
+      run: function () {
+        closeDialog(palette);
+        openDialog(contactDialog);
+      },
+    });
+    commands.push({
+      label: T("palette.theme"),
+      hint: "SYSTEM",
+      run: function () {
+        closeDialog(palette);
+        setTheme(
+          document.documentElement.getAttribute("data-theme") === "light"
+            ? "dark"
+            : "light",
+          true,
+        );
+      },
+    });
 
     paletteItems = commands;
     renderPalette(commands);
@@ -773,7 +894,10 @@
       option.setAttribute("aria-selected", String(i === paletteIndex));
     });
     options[paletteIndex].scrollIntoView({ block: "nearest" });
-    paletteInput.setAttribute("aria-activedescendant", options[paletteIndex].id);
+    paletteInput.setAttribute(
+      "aria-activedescendant",
+      options[paletteIndex].id,
+    );
   }
 
   function openPalette() {
@@ -808,7 +932,8 @@
     palette.addEventListener("close", function () {
       var anotherDialog = document.querySelector("dialog[open]");
       document.body.classList.toggle("is-locked", !!anotherDialog);
-      if (!anotherDialog && lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+      if (!anotherDialog && lastFocus && typeof lastFocus.focus === "function")
+        lastFocus.focus();
     });
 
     if (paletteInput) {
@@ -848,7 +973,9 @@
       event.preventDefault();
       highlight(paletteIndex - 1);
     } else if (event.key === "Enter") {
-      var options = paletteList ? paletteList.querySelectorAll(".palette__item") : [];
+      var options = paletteList
+        ? paletteList.querySelectorAll(".palette__item")
+        : [];
       if (options[paletteIndex]) {
         event.preventDefault();
         options[paletteIndex].click();
@@ -862,7 +989,10 @@
   if (backTop) {
     backTop.addEventListener("click", function (event) {
       event.preventDefault();
-      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotion.matches ? "auto" : "smooth",
+      });
       var brand = document.querySelector(".site-nav__brand");
       if (brand) brand.setAttribute("tabindex", "-1");
     });
@@ -870,21 +1000,28 @@
 
   /* ---------------------------- PARALLAX -------------------------- */
 
-  var parallaxNodes = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+  var parallaxNodes = Array.prototype.slice.call(
+    document.querySelectorAll("[data-parallax]"),
+  );
   var ticking = false;
 
   function applyParallax() {
     ticking = false;
     if (reduceMotion.matches || coarsePointer.matches) {
-      parallaxNodes.forEach(function (node) { node.style.transform = ""; });
+      parallaxNodes.forEach(function (node) {
+        node.style.transform = "";
+      });
       return;
     }
     parallaxNodes.forEach(function (node) {
       var rect = node.getBoundingClientRect();
       if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-      var progress = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
+      var progress =
+        (rect.top + rect.height / 2 - window.innerHeight / 2) /
+        window.innerHeight;
       var shift = Math.max(-24, Math.min(24, progress * -18));
-      node.style.transform = "scale(1.06) translateY(" + shift.toFixed(1) + "px)";
+      node.style.transform =
+        "scale(1.06) translateY(" + shift.toFixed(1) + "px)";
     });
   }
 
@@ -912,9 +1049,11 @@
   scrollHandler();
 
   /* Hide the mobile menu when a desktop width is restored. */
-  window.matchMedia("(min-width: 901px)").addEventListener("change", function (event) {
-    if (event.matches) closeNav();
-  });
+  window
+    .matchMedia("(min-width: 901px)")
+    .addEventListener("change", function (event) {
+      if (event.matches) closeNav();
+    });
 
   /* Signal to the head watchdog that the enhanced layer is live, and cancel the
      fail-open fallback in case it already fired on a slow connection. */
